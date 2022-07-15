@@ -1,5 +1,6 @@
 // Funciones
 // Las funciones son bloques de codigo que cumplen con una funcionalidad y se pueden llamar mediante su firma
+//Las funciones son mamushkas..
 
 // --- Declaraciones ---
 // Funciones Clasicas(declarada)
