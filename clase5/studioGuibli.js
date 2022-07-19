@@ -11,10 +11,10 @@ async function getLocations() {
   return await res.json();
 }
 
-async function getPeople() {
-  const res = await fetch("https://ghibliapi.herokuapp.com/people");
-  return await res.json();
-}
+// async function getPeople() {
+//   const res = await fetch("https://ghibliapi.herokuapp.com/people");
+//   return console.log(await res.json());
+// }
 
 async function getFilmsByScore(score) {
   let films = await getFilms();
@@ -32,30 +32,46 @@ async function getFilmsRanking() {
   //ordenadas desc por score
   let result = films.sort(
     (greater, smaller) => smaller.rt_score - greater.rt_score
-    );
-    //console.log(result);
-  }
-  
-  async function getFilmByName(name) {
-    // const res = await fetch(
-    //   `https://ghibliapi.herokuapp.com/films?title=${name}`
-    // );
-    // const film = await res.json();
-    // console.log(film);
-    const films = await getFilms();
-    let result = films.filter((film) => film.title === name);
-    console.log(result);
-    // Me devuelve una pelicula que contenga las palabras pasadas por parametro
-  }
+  );
+  //console.log(result);
+}
+
+async function getFilmByName(name) {
+  // manera1
+  // const res = await fetch(
+  //   `https://ghibliapi.herokuapp.com/films?title=${name}`
+  // );
+  // const film = await res.json();
+  // console.log(film);
+  // manera2
+  // const films = await getFilms();
+  // let result = films.filter((film) => film.title === name);
+  // console.log(result);
+  //Manera 3
+  const films = await getFilms();
+  let result = films.filter((film) => film.title.includes(name));
+  console.log(result[0]);
+
+  // Me devuelve una pelicula que contenga las palabras pasadas por parametro
+}
+
 async function getPeopleFromFilm(name) {
   //obtengo la peli
   const films = await getFilms();
-  let film = films.filter((film) => film.title === name);
-  let getPeople = film.map((peoples) => ({
-    people: peoples.people,
-  }));
+  let film = films.filter((film) => film.title === name)[0];
 
-  console.log(getPeople);
+  let getPeople = film.people.map(async (peopleUrl) => {
+    let peopleData = {};
+    await fetch(peopleUrl)
+      .then((res) => res.json())
+      .then((data) => (peopleData = data.name));
+    return peopleData;
+  });
+  //return fetch(getPeople).then(res => res.json());
+  //resulvo todas las promesas
+  let resolve = await Promise.all(getPeople);
+  //devuelve un arreglo con los valores de las promesas resultas
+  console.log(`Los nombres son: \n${resolve}`);
   // Me devuelve un array de objetos que son las personas que aparecen en una pelicula
 }
 
@@ -63,5 +79,4 @@ async function getPeopleFromFilm(name) {
 //getFilmByName("Castle in the Sky");
 //getFilmsByScore("95");
 //getFilmsRanking();
-
-getPeopleFromFilm("My Neighbor Totoro");
+getPeopleFromFilm("Castle in the Sky");

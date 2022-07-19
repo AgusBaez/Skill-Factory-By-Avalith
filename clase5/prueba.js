@@ -11,8 +11,8 @@ async function getFilmByName(name) {
 
     let result = films.filter((film) => film.title.includes(name)
     );
-    console.log(result.includes(name));
+    console.log(result[0]);
     
     // Me devuelve una pelicula que contenga las palabras pasadas por parametro
 }
-getFilmByName('My Neighbor Totoro')
+getFilmByName('T')
