@@ -61,7 +61,7 @@ async function getPeopleFromFilm(name) {
   let film = films.filter((film) => film.title === name)[0];
 
   let getPeople = film.people.map(async (peopleUrl) => {
-    let peopleData = {};
+    let peopleData = {}; 
     await fetch(peopleUrl)
       .then((res) => res.json())
       .then((data) => (peopleData = data.name));
