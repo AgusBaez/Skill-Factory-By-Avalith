@@ -33,7 +33,7 @@ async function getFilmsRanking() {
   let result = films.sort(
     (greater, smaller) => smaller.rt_score - greater.rt_score
   );
-  //console.log(result);
+  console.table(result);
 }
 
 async function getFilmByName(name) {
@@ -58,20 +58,20 @@ async function getFilmByName(name) {
 async function getPeopleFromFilm(name) {
   //obtengo la peli
   const films = await getFilms();
-  let film = films.filter((film) => film.title === name)[0];
+  let film = films.filter((film) => film.title === name)[0]; //Film filtrada
 
   let getPeople = film.people.map(async (peopleUrl) => {
-    let peopleData = {}; 
-    await fetch(peopleUrl)
-      .then((res) => res.json())
-      .then((data) => (peopleData = data.name));
-    return peopleData;
+    let peopleData = {}; //Donde se va a guarda las personas
+    await fetch(peopleUrl) //Son los URL de las personas que llegan de la Film
+      .then((res) => res.json()) //Estos URL los convierto en JSON para poder usarlos
+      .then((data) => (peopleData = data.name)); // Almaceno los nombres que se pasaron a JSON
+    return peopleData; //Devolveme las personas y solo con la clave "name"
   });
   //return fetch(getPeople).then(res => res.json());
   //resulvo todas las promesas
-  let resolve = await Promise.all(getPeople);
+  let resolve = await Promise.all(getPeople); //Almaceno las promesas que se cumplieron
   //devuelve un arreglo con los valores de las promesas resultas
-  console.log(`Los nombres son: \n${resolve}`);
+  console.table(resolve);
   // Me devuelve un array de objetos que son las personas que aparecen en una pelicula
 }
 
