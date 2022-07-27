@@ -1,0 +1,4 @@
+#IGNORAR:
+/node_module
+package-lock
+/package.json
