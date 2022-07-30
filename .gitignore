@@ -1,6 +1,6 @@
 #IGNORAR:
 node_module
 *package
-/Other/
-package-lock.json
-package.json
+/Other
+.env
+/class/clase9

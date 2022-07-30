@@ -75,7 +75,7 @@ exp.get("/producto/filtro", async (req, res) => {
   }));
 
   let limit = Object.values(req.query); // ?limit= valor del limite, este valor de elementos a cortar se usara con slice
-  let filtro = products.slice(limit[0]-1, limit[1]);
+  let filtro = products.slice(limit[0] - 1, limit[1]);
   let result = filtro.sort((primero, segundo) => segundo.price - primero.price);
   res.status(200).send(result);
   /*try {

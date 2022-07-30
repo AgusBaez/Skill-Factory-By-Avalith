@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "node-fetch": "^3.2.9",
     "nodemon": "^2.0.19"
@@ -9,7 +10,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon Class/Clase7/app.js",
+    "start": "nodemon Class/Clase8/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "A.Baez",
