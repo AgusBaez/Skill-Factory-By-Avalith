@@ -1,5 +1,5 @@
 #IGNORAR:
-node_module
+node_modules
 *package
 /Other
 .env
