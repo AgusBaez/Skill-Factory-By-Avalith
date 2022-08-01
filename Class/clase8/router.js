@@ -96,6 +96,7 @@ router.get("/", [today, month], helloWorld);
 //SI NINGUNA CONSULTA COINCIDE ENTRA A LA DEFAULT
 router.use((req, res, next) => {
   res.status(404).send("NOT FOUND (404)");
+ 
   //PODRIA REDIRRECCIONAR A UN VIEW 404 (MVC)
 
   //PODRIA REDIRECCIONAR A OTRA PAGINA
