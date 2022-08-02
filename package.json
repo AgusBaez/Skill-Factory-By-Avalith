@@ -10,7 +10,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./Class9Exercise/app.js",
+    "start": "nodemon ./Class/Clase10/Exercise/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "A.Baez",
