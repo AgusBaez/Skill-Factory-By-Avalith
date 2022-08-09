@@ -10,7 +10,7 @@ const errorHandler = require("./middleware/errorHandler");
 router.use("/", [dates.myDate, dates.today, dates.month]);
 
 /* Products & Categories */
-router.get("/store/products/categories/expensive", dates.requestDays, storeController.getByCategoryExpensive);
+router.get("/store/products/categories/expensive", dates.requestDays, storeController.getProductsExpensive);
 router.get("/store/products/categories/", dates.requestDays, storeController.getAllProductByCategory);
 router.get("/store/products/categories/:categories", dates.requestDays, storeController.getProductByCategory);
 router.get("/store/products/prices", dates.requestDays, storeController.getProductPrice);
@@ -23,6 +23,7 @@ router.get("/store/users/firsts", storeController.get3Users);
 /* Carts */
 //All Carts: http://localhost:3000/store/carts
 router.get("/store/carts", storeController.getCarts);
+router.get("/store/carts/bigcarts", storeController.getBigCarts);
 
 
 //Obtener los productos filtrados

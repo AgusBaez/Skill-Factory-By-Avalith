@@ -20,30 +20,18 @@ const getProductPrice = async (req, res) => {
     res.status(200).send(products);
   }
 };
-
-const getProductsInCategories = async (req, res) => {
+const getProductsExpensive = async (req, res) => {
   const allCategory = await getStoreModel.getCategories();
 
-  let productsByCategory = allCategory.map(async (category) => {
-    return await getStoreModel.getByCategories(category);
+  let getExpensive = allCategory.map(async (category) => {
+    const getProductList = await getStoreModel.getByCategories(category);
+    getProductList.sort((a, b) => b.price - a.price);
+    return getProductList[0];
   });
 
-  let dataCategory = await Promise.all(productsByCategory).then((data) => {
-    return data;
+  Promise.all(getExpensive).then((data) => {
+    res.status(200).send(data);
   });
-
-  return dataCategory;
-};
-
-const getByCategoryExpensive = async (req, res) => {
-  //Todos los Productos
-  let products = await getProductsInCategories();
-
-  //DE TODOS LOS PRODUCTOS EL QUE TENGA PRICE EL MAYOR
-  const getProductsByCategory = products[0];
-
-  console.log(getProductsByCategory);
-  res.status(200).send(getProductsByCategory);
 };
 
 const getAllProductByCategory = async (req, res) => {
@@ -53,11 +41,9 @@ const getAllProductByCategory = async (req, res) => {
     return await getStoreModel.getByCategories(category);
   });
 
-  let dataCategory = await Promise.all(productsByCategory).then((data) => {
-    return data;
+  Promise.all(productsByCategory).then((data) => {
+    res.status(200).send(data);
   });
-
-  res.status(200).send(dataCategory);
 };
 
 const getProductByCategory = async (req, res) => {
@@ -110,16 +96,35 @@ let getCarts = async (req, res) => {
   let carts = await getStoreModel.getCarts();
   res.status(200).send(carts);
 };
+let getBigCarts = async (req, res) => {
+  let carts = await getStoreModel.getCarts();
+  let users = await getStoreModel.getUsers();
+
+  let getAllBigCarts = carts.filter((bigCart) => {
+    if (bigCart.products.length > 2) {
+      let bigUser = users.find((userCart) => {
+        return userCart.id === bigCart.userId;
+      });
+      bigCart.name = bigUser.name;
+      return {
+        user_Cart: bigCart,
+      };
+    }
+  });
+  
+  res.status(200).send(getAllBigCarts);
+};
 
 const storeController = {
   getProductById,
   getProductPrice,
   getProductByCategory,
   getAllProductByCategory,
-  getByCategoryExpensive,
+  getProductsExpensive,
   getUsers,
   get3Users,
   getCarts,
+  getBigCarts,
 };
 
 module.exports = storeController;
