@@ -15,22 +15,9 @@ async function getCategories() {
 }
 
 async function getByCategories(category) {
-  const res = await fetch(`https://fakestoreapi.com/products/category/` + category);
-  return await res.json();
-}
-
-async function getUsers() {
-  const res = await fetch("https://fakestoreapi.com/users/");
-  return await res.json();
-}
-
-async function get3Users() {
-  const res = await fetch("https://fakestoreapi.com/users/?limit=3");
-  return await res.json();
-}
-
-async function getCarts() {
-  const res = await fetch("https://fakestoreapi.com/carts");
+  const res = await fetch(
+    `https://fakestoreapi.com/products/category/` + category
+  );
   return await res.json();
 }
 
@@ -39,10 +26,6 @@ let product = {
   getProducts,
   getCategories,
   getByCategories,
-  getUsers,
-  get3Users,
-  getCarts,
-  //getBigCarts,
 };
 
 module.exports = product;

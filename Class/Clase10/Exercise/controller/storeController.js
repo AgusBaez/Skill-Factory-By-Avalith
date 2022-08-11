@@ -1,25 +1,38 @@
 //Requiero de los datos..
 const getStoreModel = require("../model/storeModel");
 
-const getProductPrice = async (req, res) => {
-  let products = await getMappedProducts();
-  let sortLimit = req.query.order;
+let getMappedProducts = async (req, _res) => {
+  let products = await getStoreModel.getProducts();
 
-  if (sortLimit !== undefined) {
-    if (sortLimit === "desc") {
+  products = products.map((product) => ({
+    id: product.id,
+    title: product.title,
+    price: product.price,
+  }));
+
+  return products;
+};
+
+const getProductOrder = async (req, res) => {
+  let products = await getMappedProducts();
+  let typeOrder = req.query.order;
+
+  if (typeOrder !== undefined) {
+    if (typeOrder === "desc") {
       products.sort((a, b) => b.price - a.price);
       res.status(200).send(products);
-    } else if (sortLimit === "asc") {
+    } else if (typeOrder === "asc") {
       products.sort((a, b) => a.price - b.price);
       res.status(200).send(products);
-    } else if (sortLimit !== String) {
-      let filtro = products.slice(sortLimit[0] - 1, sortLimit[1]);
+    } else if (typeOrder !== String) {
+      let filtro = products.slice(typeOrder[0] - 1, typeOrder[1]);
       res.status(200).send(filtro);
     }
   } else {
     res.status(200).send(products);
   }
 };
+
 const getProductsExpensive = async (req, res) => {
   const allCategory = await getStoreModel.getCategories();
 
@@ -48,26 +61,19 @@ const getAllProductByCategory = async (req, res) => {
 
 const getProductByCategory = async (req, res) => {
   let data = req.params.categories;
-  console.log(data);
   let products = await getStoreModel.getProducts(data);
 
   let result = products.filter((product) => product.category.includes(data));
-  console.log(result);
-  res.status(200).send(result);
-};
-
-let getMappedProducts = async (req, _res) => {
-  let products = await getStoreModel.getProducts();
-  products = products.map((product) => ({
-    id: product.id,
-    title: product.title,
-    price: product.price,
-  }));
-  return products;
+  if (result.length == 0) {
+    res.status(400).send(`ERROR: BAD REQUEST(CATEGORY NOT FOUND)`);
+  } else {
+    res.status(200).send(result);
+  }
 };
 
 const getProductById = async (req, res) => {
   const id = req.params.id;
+
   let products = await getMappedProducts();
   products = products.map((product) => ({
     id: product.id,
@@ -76,55 +82,20 @@ const getProductById = async (req, res) => {
     category: product.category,
     rating: product.rating,
   }));
-  res.status(200).send(products[id - 1]);
-};
 
-/* USERS */
-let getUsers = async (req, res) => {
-  let users = await getStoreModel.getUsers();
-  res.status(200).send(users);
-};
-
-let get3Users = async (req, res) => {
-  let users = await getStoreModel.get3Users();
-
-  res.status(200).send(users);
-};
-
-/* CARTS */
-let getCarts = async (req, res) => {
-  let carts = await getStoreModel.getCarts();
-  res.status(200).send(carts);
-};
-let getBigCarts = async (req, res) => {
-  let carts = await getStoreModel.getCarts();
-  let users = await getStoreModel.getUsers();
-
-  let getAllBigCarts = carts.filter((bigCart) => {
-    if (bigCart.products.length > 2) {
-      let bigUser = users.find((userCart) => {
-        return userCart.id === bigCart.userId;
-      });
-      bigCart.name = bigUser.name;
-      return {
-        user_Cart: bigCart,
-      };
-    }
-  });
-  
-  res.status(200).send(getAllBigCarts);
+  if (!products[id - 1]) {
+    res.status(400).send("ERROR: BAD REQUEST (ID NOT FOUND)");
+  } else {
+    res.status(200).send(products[id - 1]);
+  }
 };
 
 const storeController = {
   getProductById,
-  getProductPrice,
+  getProductOrder,
   getProductByCategory,
   getAllProductByCategory,
   getProductsExpensive,
-  getUsers,
-  get3Users,
-  getCarts,
-  getBigCarts,
 };
 
 module.exports = storeController;

@@ -14,7 +14,9 @@ function month(req, res, next) {
 }
 
 let requestDays = (req, _res, next) => {
-  let todayDays = `New request - ${req.method} - in ${req.url} on day: ${req.today + " of " + req.month} `;
+  let todayDays = `New request - ${req.method} - in ${req.url} on day: ${
+    req.today + " of " + req.month
+  } `;
   console.log(todayDays);
   next();
 };
